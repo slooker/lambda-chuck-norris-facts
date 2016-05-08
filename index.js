@@ -1,11 +1,7 @@
 var fetch = require('node-fetch');
 /**
- * This sample demonstrates a simple skill built with the Amazon Alexa Skills Kit.
- * The Intent Schema, Custom Slots, and Sample Utterances for this skill, as well as
- * testing instructions are located at http://amzn.to/1LzFrj6
- *
- * For additional samples, visit the Alexa Skills Kit Getting Started guide at
- * http://amzn.to/1LGWsLG
+ * This is a sample example of a lambda function that requests data from an api
+ * to demo for a talk at Node PDX.
  */
 
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
@@ -15,58 +11,31 @@ exports.handler = function (event, context) {
         console.log("event.session.application.applicationId=" + event.session.application.applicationId);
 
         /**
-         * Uncomment this if statement and populate with your skill's application ID to
-         * prevent someone else from configuring a skill that sends requests to this function.
+         * Populate with your skill's application ID to * prevent someone
+         * else from configuring a skill that sends requests to this function.
+         * Keep in mind that your lambda function will use a different id Thank
+         * AWS will when echo makes a request.
          */
-        /*
-        if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app.[unique-value-here]") {
+        if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app.10549580-3661-4854-a3b4-49ac57e0d6f1" && // lambda
+          event.session.application.applicationId !== "amzn1.echo-sdk-ams.app.0c65a62d-04be-4baa-8de5-c941e66909d9") { // Echo
              context.fail("Invalid Application ID");
         }
-        */
 
-        if (event.session.new) {
-            onSessionStarted({requestId: event.request.requestId}, event.session);
-        }
+        // if (event.session.new) {
+        //     onSessionStarted({requestId: event.request.requestId}, event.session);
+        // }
 
-        if (event.request.type === "LaunchRequest") {
-            onLaunch(event.request,
-                event.session,
-                function callback(sessionAttributes, speechletResponse) {
-                    context.succeed(buildResponse(sessionAttributes, speechletResponse));
-                });
-        } else if (event.request.type === "IntentRequest") {
+        if (event.request.type === "IntentRequest") {
             onIntent(event.request,
                 event.session,
                 function callback(sessionAttributes, speechletResponse) {
                     context.succeed(buildResponse(sessionAttributes, speechletResponse));
                 });
-        } else if (event.request.type === "SessionEndedRequest") {
-            onSessionEnded(event.request, event.session);
-            context.succeed();
         }
     } catch (e) {
         context.fail("Exception: " + e);
     }
 };
-
-/**
- * Called when the session starts.
- */
-function onSessionStarted(sessionStartedRequest, session) {
-    console.log("onSessionStarted requestId=" + sessionStartedRequest.requestId +
-        ", sessionId=" + session.sessionId);
-}
-
-/**
- * Called when the user launches the skill without specifying what they want.
- */
-function onLaunch(launchRequest, session, callback) {
-    console.log("onLaunch requestId=" + launchRequest.requestId +
-        ", sessionId=" + session.sessionId);
-
-    // Dispatch to your skill's launch.
-    getWelcomeResponse(callback);
-}
 
 /**
  * Called when the user specifies an intent for this skill.
@@ -87,39 +56,6 @@ function onIntent(intentRequest, session, callback) {
     }
 }
 
-/**
- * Called when the user ends the session.
- * Is not called when the skill returns shouldEndSession=true.
- */
-function onSessionEnded(sessionEndedRequest, session) {
-    console.log("onSessionEnded requestId=" + sessionEndedRequest.requestId +
-        ", sessionId=" + session.sessionId);
-    // Add cleanup logic here
-}
-
-// --------------- Functions that control the skill's behavior -----------------------
-
-function getWelcomeResponse(callback) {
-    // If we wanted to initialize the session to have some attributes we could add those here.
-    var sessionAttributes = {};
-    var cardTitle = "Welcome";
-    var speechOutput = "Welcome to the princess bride quote machine.  Ask for a quote by saying, alexa, tell me a princess bride quote"
-    var repromptText = speechOutput;
-    var shouldEndSession = false;
-
-    callback(sessionAttributes,
-        buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
-}
-
-function handleSessionEndRequest(callback) {
-    var cardTitle = "Session Ended";
-    var speechOutput = "Thank you for trying the princess bride quote machine. Have fun storming the castle!";
-    // Setting this to true ends the session and exits the skill.
-    var shouldEndSession = true;
-
-    callback({}, buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
-}
-
 function getChuckNorrisFact(intent, session, callback) {
     var repromptText = null;
     var sessionAttributes = {};
@@ -127,7 +63,7 @@ function getChuckNorrisFact(intent, session, callback) {
     var speechOutput = "";
 
     var chuckUrl = 'http://api.icndb.com/jokes/random';
-    console.log("Getting chuck url 4");
+    console.log("Getting chuck url 8");
 
     fetch(chuckUrl)
       .then((response) => { return response.json(); })
@@ -141,9 +77,6 @@ function getChuckNorrisFact(intent, session, callback) {
         callback(sessionAttributes,
           buildSpeechletResponse(intent.name, speechOutput, repromptText, shouldEndSession));
       });
-
-
-
 }
 
 // --------------- Helpers that build all of the responses -----------------------
