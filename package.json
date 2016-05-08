@@ -1,0 +1,27 @@
+{
+  "name": "chuck-norris",
+  "version": "1.0.0",
+  "description": "Chuck Norris quote machine, using http://www.icndb.com/api/",
+  "main": "index.js",
+  "dependencies": {
+    "node-fetch": "^1.5.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slooker/lambda-chuck-norris-facts.git"
+  },
+  "keywords": [
+    "Chuck",
+    "Norris"
+  ],
+  "author": "Shawn Looker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slooker/lambda-chuck-norris-facts/issues"
+  },
+  "homepage": "https://github.com/slooker/lambda-chuck-norris-facts#readme"
+}
